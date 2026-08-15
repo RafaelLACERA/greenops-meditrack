@@ -67,7 +67,7 @@ resource "aws_route_table_association" "public" {
 # tout le trafic sortant autorisé.
 resource "aws_security_group" "web" {
   name        = "${var.project_name}-sg-web"
-  description = "Autorise HTTP/HTTPS depuis Internet et SSH restreint pour l'administration"
+  description = "Allow_HTTP_HTTPS_and_restricted_SSH"
   vpc_id      = aws_vpc.main.id
 
   ingress {
