@@ -19,9 +19,9 @@ resource "aws_vpc" "main" {
 # et SSH restreint pour l'administration Ansible).
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block               = var.public_subnet_cidr
-  availability_zone        = var.availability_zone
-  map_public_ip_on_launch  = true
+  cidr_block              = var.public_subnet_cidr
+  availability_zone       = var.availability_zone
+  map_public_ip_on_launch = true
 
   tags = {
     Name    = "${var.project_name}-subnet-public"
@@ -87,7 +87,7 @@ resource "aws_security_group" "web" {
   }
 
   ingress {
-    description = "SSH (administration Ansible) — restreint à l'IP admin"
+    description = "SSH (administration Ansible) - restreint a l IP admin"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -95,7 +95,7 @@ resource "aws_security_group" "web" {
   }
 
   egress {
-    description = "Tout le trafic sortant autorisé"
+    description = "Tout le trafic sortant autorise"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
