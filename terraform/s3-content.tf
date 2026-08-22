@@ -1,11 +1,7 @@
 # =============================================================================
 # Déploiement du contenu du site statique — géré par Terraform (IaC)
 # =============================================================================
-#
-# Plutôt qu'un "aws s3 sync" manuel (non reproductible, non versionné), on
-# déclare le contenu du site comme une ressource Terraform à part entière.
-# Chaque fichier de site/ devient un objet S3, recréé/mis à jour automatiquement
-# à chaque "terraform apply" si son contenu a changé (grâce à l'etag = hash MD5).
+
 
 locals {
   site_dir = "${path.module}/../site"

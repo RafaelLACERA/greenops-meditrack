@@ -42,3 +42,13 @@ output "cloudfront_distribution_id" {
   description = "ID de la distribution CloudFront (utile pour invalider le cache après un déploiement)"
   value       = aws_cloudfront_distribution.site.id
 }
+
+output "ec2_public_ip" {
+  description = "Adresse IP publique fixe de l'instance EC2 (à utiliser dans l'inventaire Ansible)"
+  value       = aws_eip.web.public_ip
+}
+
+output "ec2_instance_id" {
+  description = "ID de l'instance EC2"
+  value       = aws_instance.web.id
+}
