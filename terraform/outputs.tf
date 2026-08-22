@@ -32,3 +32,13 @@ output "cloudfront_oac_id" {
   description = "ID de l'Origin Access Control, à utiliser dans la distribution CloudFront"
   value       = aws_cloudfront_origin_access_control.site.id
 }
+
+output "cloudfront_url" {
+  description = "URL publique du site statique MediTrack Online (livrable principal)"
+  value       = "https://${aws_cloudfront_distribution.site.domain_name}"
+}
+
+output "cloudfront_distribution_id" {
+  description = "ID de la distribution CloudFront (utile pour invalider le cache après un déploiement)"
+  value       = aws_cloudfront_distribution.site.id
+}
