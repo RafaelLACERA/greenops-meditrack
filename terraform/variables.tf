@@ -44,3 +44,9 @@ variable "admin_ip_cidr" {
   description = "Adresse IP publique de l'administrateur autorisée en SSH sur l'instance EC2 (format CIDR, ex: 82.65.12.34/32). À adapter à ton IP publique réelle."
   type        = string
 }
+
+variable "ssh_public_key_path" {
+  description = "Chemin vers la clé publique SSH dédiée au projet (générée avec ssh-keygen, jamais la clé privée)"
+  type        = string
+  default     = "~/.ssh/meditrack_devops.pub"
+}
