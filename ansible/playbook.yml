@@ -1,0 +1,7 @@
+---
+- name: Configuration du serveur web MediTrack Online
+  hosts: webserver
+  become: true
+
+  roles:
+    - webserver
