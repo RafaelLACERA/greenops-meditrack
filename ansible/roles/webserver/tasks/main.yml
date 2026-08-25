@@ -104,14 +104,14 @@
 
 - name: Déployer les fichiers statiques du site
   ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: /var/www/meditrack/
+    src: "{{ playbook_dir }}/../site/{{ item }}"
+    dest: "/var/www/meditrack/{{ item }}"
     owner: www-data
     group: www-data
     mode: "0644"
   loop:
-    - "../../../site/index.html"
-    - "../../../site/contact.html"
+    - index.html
+    - contact.html
 
 - name: Créer le dossier assets/ sur le serveur
   ansible.builtin.file:
@@ -123,7 +123,7 @@
 
 - name: Déployer les fichiers assets/ (CSS, images...)
   ansible.builtin.copy:
-    src: "../../../site/assets/"
+    src: "{{ playbook_dir }}/../site/assets/"
     dest: /var/www/meditrack/assets/
     owner: www-data
     group: www-data
