@@ -9,7 +9,7 @@ terraform {
   }
 }
 
-# Utilise le profil AWS CLI dédié "meditrack" (créé en Q1) plutôt que le profil
+# Utilisation du profil AWS CLI dédié "meditrack" (créé en Q1) plutôt que le profil
 # default, conformément au principe du moindre privilège.
 provider "aws" {
   region  = var.aws_region
