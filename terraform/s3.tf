@@ -1,6 +1,6 @@
-# =============================================================================
+
 # S3 — hébergement du site statique MediTrack Online
-# =============================================================================
+
 #
 # Choix de sécurité : le bucket reste privé (aucun accès public direct).
 # Seul CloudFront pourra lire son contenu, via un Origin Access Control (OAC).

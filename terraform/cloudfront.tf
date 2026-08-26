@@ -1,7 +1,4 @@
-# =============================================================================
 # CloudFront — diffusion du site statique MediTrack Online (HTTPS)
-# =============================================================================
-
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -33,8 +30,7 @@ resource "aws_cloudfront_distribution" "site" {
     max_ttl     = 86400
   }
 
-  # Page d'erreur : redirige les 403/404 vers index.html (pratique pour une
-  # site statique simple / futur SPA), en renvoyant un code 200.
+  # Page d'erreur : redirige les 403/404 vers index.html
   custom_error_response {
     error_code         = 403
     response_code      = 200
@@ -53,9 +49,7 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
-  # Certificat TLS par défaut fourni par CloudFront (*.cloudfront.net).
-  # Suffisant pour ce livrable ; un certificat ACM + domaine personnalisé
-  # pourrait être ajouté ultérieurement (ex: meditrack.lacera.fr).
+  # Certificat TLS par défaut fourni par CloudFront (*.cloudfront.net). methode trouvée sur internet
   viewer_certificate {
     cloudfront_default_certificate = true
   }
@@ -66,9 +60,8 @@ resource "aws_cloudfront_distribution" "site" {
   }
 }
 
-# Policy du bucket S3 : autorise UNIQUEMENT le service CloudFront à lire les
-# objets, et seulement pour cette distribution précise (condition sur l'ARN).
-# C'est ce qui referme la boucle de sécurité ouverte par l'OAC dans s3.tf.
+# Policy du bucket S3 : autorise UNIQUEMENT le service CloudFront
+
 resource "aws_s3_bucket_policy" "site" {
   bucket = aws_s3_bucket.site.id
 

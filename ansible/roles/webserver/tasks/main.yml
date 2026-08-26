@@ -1,7 +1,7 @@
 ---
-# =============================================================================
+
 # 1. Installation et démarrage de Nginx
-# =============================================================================
+
 
 - name: Mettre à jour le cache apt
   ansible.builtin.apt:
@@ -21,11 +21,11 @@
     state: started
     enabled: true
 
-# =============================================================================
-# 2. Sécurité — pare-feu (UFW)
-# =============================================================================
 
-- name: Autoriser SSH dans UFW (avant d'activer, sinon on se coupe l'accès !)
+# 2. Sécurité — pare-feu (UFW)
+
+
+- name: Autoriser SSH dans UFW
   community.general.ufw:
     rule: allow
     name: OpenSSH
@@ -48,9 +48,7 @@
     policy: deny
     direction: incoming
 
-# =============================================================================
 # 3. Sécurité — gestion des utilisateurs et accès SSH
-# =============================================================================
 
 - name: Interdire la connexion SSH root
   ansible.builtin.lineinfile:
@@ -66,9 +64,8 @@
     line: 'PasswordAuthentication no'
   notify: Redémarrer SSH
 
-# =============================================================================
 # 4. Déploiement de la configuration Nginx
-# =============================================================================
+
 
 - name: Créer le répertoire racine du site
   ansible.builtin.file:
@@ -98,9 +95,9 @@
     state: absent
   notify: Recharger Nginx
 
-# =============================================================================
+
 # 5. Déploiement des fichiers statiques du site MediTrack Online
-# =============================================================================
+
 
 - name: Déployer les fichiers statiques du site
   ansible.builtin.copy:
