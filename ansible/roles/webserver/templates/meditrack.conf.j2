@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name _;
+
+    root /var/www/meditrack;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Logs dédiés au site MediTrack (facilite le débogage / la supervision)
+    access_log /var/log/nginx/meditrack-access.log;
+    error_log  /var/log/nginx/meditrack-error.log;
+}

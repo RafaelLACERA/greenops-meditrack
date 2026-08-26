@@ -1,0 +1,28 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Ansible
+*.retry
+vault_pass.txt
+ansible/group_vars/webserver.yml
+
+# AWS / credentials
+.aws/
+*.pem
+*.key
+
+# Misc
+.DS_Store
+*.swp
