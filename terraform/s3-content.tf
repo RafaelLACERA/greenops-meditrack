@@ -1,5 +1,5 @@
 
-# Déploiement du contenu du site statique — géré par Terraform (IaC)
+# Déploiement du contenu du site statique 
 
 
 
@@ -7,8 +7,7 @@ locals {
   site_dir = "${path.module}/../site"
 
   # Association extension → type MIME, pour que le navigateur interprète
-  # correctement chaque fichier (sans ça, tout serait servi en
-  # application/octet-stream et le site s'afficherait mal).
+  # correctement chaque fichier
   mime_types = {
     ".html" = "text/html"
     ".css"  = "text/css"
@@ -25,14 +24,14 @@ locals {
 }
 
 resource "aws_s3_object" "site_files" {
-  # Parcourt récursivement tous les fichiers de site/ (hors dossiers)
+  # Boucle recursive 
   for_each = fileset(local.site_dir, "**")
 
   bucket = aws_s3_bucket.site.id
   key    = each.value
   source = "${local.site_dir}/${each.value}"
 
-  # Terraform ne remplace le fichier que si son contenu a réellement changé.
+  # Terraform ne remplace le fichier que si son contenu a réellement changé
   etag = filemd5("${local.site_dir}/${each.value}")
 
   content_type = lookup(

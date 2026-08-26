@@ -15,6 +15,8 @@ resource "aws_s3_bucket" "site" {
   # l'account ID pour éviter toute collision.
   bucket = "${var.project_name}-site-${data.aws_caller_identity.current.account_id}"
 
+  force_destroy = true
+
   tags = {
     Name    = "${var.project_name}-site"
     Project = var.project_name
@@ -34,7 +36,7 @@ resource "aws_s3_bucket_public_access_block" "site" {
 }
 
 # Chiffrement des objets stockés (au repos), bonne pratique AWS pour la
-# protection des données — répond aux impératifs RGPD/HDS.
+# protection des données — répond à RGPD/HDS.
 resource "aws_s3_bucket_server_side_encryption_configuration" "site" {
   bucket = aws_s3_bucket.site.id
 
@@ -57,7 +59,7 @@ resource "aws_s3_bucket_versioning" "site" {
 
 # Origin Access Control : c'est ce qui permettra à CloudFront (et uniquement
 # CloudFront) d'aller lire les objets du bucket. Le lien avec la distribution
-# CloudFront et la policy du bucket seront complétés dans le bloc CloudFront.
+# CloudFront et la policy du bucket sont complétés dans le bloc CloudFront.
 resource "aws_cloudfront_origin_access_control" "site" {
   name                              = "${var.project_name}-oac"
   description                       = "OAC pour le bucket du site statique MediTrack"
