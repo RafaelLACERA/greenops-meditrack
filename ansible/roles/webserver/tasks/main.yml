@@ -25,10 +25,19 @@
 # 2. Sécurité — pare-feu (UFW)
 
 
-- name: Autoriser SSH dans UFW
+- name: Autoriser SSH dans UFW, uniquement depuis mon IP
+  community.general.ufw:
+    rule: allow
+    port: "22"
+    proto: tcp
+    from_ip: "{{ admin_ip }}"
+
+- name: Supprimer l'ancienne règle SSH ouverte à tout le monde (profil OpenSSH générique)
   community.general.ufw:
     rule: allow
     name: OpenSSH
+    delete: true
+  ignore_errors: true 
 
 - name: Autoriser HTTP (port 80) dans UFW
   community.general.ufw:

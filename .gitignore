@@ -16,6 +16,7 @@ terraform.rc
 # Ansible
 *.retry
 vault_pass.txt
+ansible/group_vars/webserver.yml
 
 # AWS / credentials
 .aws/
