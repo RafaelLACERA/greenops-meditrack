@@ -1,0 +1,130 @@
+---
+# =============================================================================
+# 1. Installation et démarrage de Nginx
+# =============================================================================
+
+- name: Mettre à jour le cache apt
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Installer Nginx et UFW
+  ansible.builtin.apt:
+    name:
+      - nginx
+      - ufw
+    state: present
+
+- name: S'assurer que Nginx est démarré et activé au boot
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: true
+
+# =============================================================================
+# 2. Sécurité — pare-feu (UFW)
+# =============================================================================
+
+- name: Autoriser SSH dans UFW (avant d'activer, sinon on se coupe l'accès !)
+  community.general.ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Autoriser HTTP (port 80) dans UFW
+  community.general.ufw:
+    rule: allow
+    port: "80"
+    proto: tcp
+
+- name: Autoriser HTTPS (port 443) dans UFW
+  community.general.ufw:
+    rule: allow
+    port: "443"
+    proto: tcp
+
+- name: Activer UFW avec politique par défaut deny en entrée
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming
+
+# =============================================================================
+# 3. Sécurité — gestion des utilisateurs et accès SSH
+# =============================================================================
+
+- name: Interdire la connexion SSH root
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin no'
+  notify: Redémarrer SSH
+
+- name: Désactiver l'authentification SSH par mot de passe (clé uniquement)
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+  notify: Redémarrer SSH
+
+# =============================================================================
+# 4. Déploiement de la configuration Nginx
+# =============================================================================
+
+- name: Créer le répertoire racine du site
+  ansible.builtin.file:
+    path: /var/www/meditrack
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Déployer la configuration Nginx du site MediTrack
+  ansible.builtin.template:
+    src: meditrack.conf.j2
+    dest: /etc/nginx/sites-available/meditrack
+    mode: "0644"
+  notify: Recharger Nginx
+
+- name: Activer le site MediTrack (lien symbolique sites-enabled)
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/meditrack
+    dest: /etc/nginx/sites-enabled/meditrack
+    state: link
+  notify: Recharger Nginx
+
+- name: Désactiver le site Nginx par défaut
+  ansible.builtin.file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  notify: Recharger Nginx
+
+# =============================================================================
+# 5. Déploiement des fichiers statiques du site MediTrack Online
+# =============================================================================
+
+- name: Déployer les fichiers statiques du site
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../site/{{ item }}"
+    dest: "/var/www/meditrack/{{ item }}"
+    owner: www-data
+    group: www-data
+    mode: "0644"
+  loop:
+    - index.html
+    - contact.html
+
+- name: Créer le dossier assets/ sur le serveur
+  ansible.builtin.file:
+    path: /var/www/meditrack/assets
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: "0755"
+
+- name: Déployer les fichiers assets/ (CSS, images...)
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../site/assets/"
+    dest: /var/www/meditrack/assets/
+    owner: www-data
+    group: www-data
+    mode: "0644"
