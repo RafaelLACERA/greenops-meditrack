@@ -37,7 +37,10 @@
     rule: allow
     name: OpenSSH
     delete: true
-  ignore_errors: true 
+  # Idempotent : ce profil peut déjà avoir été supprimé lors d'un run précédent,
+  # ce n'est pas une vraie erreur. failed_when (plutôt que ignore_errors) suit
+  # la recommandation ansible-lint : ne jamais faire échouer ce step.
+  failed_when: false
 
 - name: Autoriser HTTP (port 80) dans UFW
   community.general.ufw:
