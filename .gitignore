@@ -26,3 +26,8 @@ ansible/group_vars/webserver.yml
 # Misc
 .DS_Store
 *.swp
+
+# Documents Visiplus (énoncés, FT, rendus) : jamais dans le repo distant.
+# Ils vivent dans ../docs (hors de ce repo) ; cette règle est un filet de
+# sécurité si jamais un fichier finissait par atterrir ici par erreur.
+docs/

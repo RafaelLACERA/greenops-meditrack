@@ -52,3 +52,52 @@ output "ec2_instance_id" {
   description = "ID de l'instance EC2"
   value       = aws_instance.web.id
 }
+
+# --- Bloc 2 : réseau (pour retrouver rapidement les IDs dans la console) ---
+
+output "public_subnet_b_id" {
+  description = "ID du 2e sous-réseau public (pour l'ALB)"
+  value       = aws_subnet.public_b.id
+}
+
+output "private_subnet_a_id" {
+  description = "ID du sous-réseau privé AZ a (RDS, ECS)"
+  value       = aws_subnet.private_a.id
+}
+
+output "private_subnet_b_id" {
+  description = "ID du sous-réseau privé AZ b (RDS, ECS)"
+  value       = aws_subnet.private_b.id
+}
+
+output "nat_gateway_id" {
+  description = "ID du NAT Gateway"
+  value       = aws_nat_gateway.main.id
+}
+
+# --- Bloc 3 : ECR / RDS / ECS / ALB ---
+
+output "ecr_repository_url" {
+  description = "URL du dépôt ECR"
+  value       = aws_ecr_repository.api.repository_url
+}
+
+output "rds_address" {
+  description = "Adresse (hôte seul) de l'instance RDS"
+  value       = aws_db_instance.main.address
+}
+
+output "alb_dns_name" {
+  description = "Nom DNS public de l'ALB"
+  value       = aws_lb.api.dns_name
+}
+
+output "ecs_cluster_name" {
+  description = "Nom du cluster ECS"
+  value       = aws_ecs_cluster.main.name
+}
+
+output "ecs_service_name" {
+  description = "Nom du service ECS"
+  value       = aws_ecs_service.api.name
+}

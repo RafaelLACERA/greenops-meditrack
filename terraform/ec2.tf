@@ -45,6 +45,15 @@ resource "aws_instance" "web" {
     Project = var.project_name
     Env     = var.environment
   }
+
+  # Le data source most_recent=true resout une nouvelle AMI des qu'un patch
+  # Ubuntu sort, ce qui forcerait Terraform a detruire/recreer cette instance
+  # a chaque plan/apply. On ignore les changements d'AMI sur l'instance deja
+  # existante : un destroy -> apply from scratch reprendra quand meme la
+  # derniere AMI disponible (reproductibilite conservee, cf. Bloc 1).
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }
 
 # Adresse IP publique fixe : afin d'eviter  que l'IP publique change

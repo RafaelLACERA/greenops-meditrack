@@ -50,3 +50,60 @@ variable "ssh_public_key_path" {
   type        = string
   default     = "~/.ssh/meditrack_devops.pub"
 }
+
+# =============================================================================
+# Bloc 2 — réseau privé (RDS, ECS créés à la main dans la console ensuite)
+# =============================================================================
+
+variable "availability_zone_b" {
+  description = "2e zone de disponibilité, requise par l'ALB (2 AZ minimum) et le subnet group RDS"
+  type        = string
+  default     = "eu-west-3b"
+}
+
+variable "public_subnet_b_cidr" {
+  description = "Plage d'adresses IP du 2e sous-réseau public (pour l'ALB)"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
+variable "private_subnet_a_cidr" {
+  description = "Plage d'adresses IP du sous-réseau privé en AZ a (RDS, tâches ECS)"
+  type        = string
+  default     = "10.0.11.0/24"
+}
+
+variable "private_subnet_b_cidr" {
+  description = "Plage d'adresses IP du sous-réseau privé en AZ b (RDS, tâches ECS)"
+  type        = string
+  default     = "10.0.12.0/24"
+}
+
+# =============================================================================
+# Bloc 3 — ECR, RDS, ECS, ALB (géré en Terraform cette fois : infra jetable,
+# recréée/détruite plusieurs fois pendant le Bloc 3)
+# =============================================================================
+
+variable "db_name" {
+  description = "Nom de la base de données PostgreSQL de l'API"
+  type        = string
+  default     = "meditrack"
+}
+
+variable "db_username" {
+  description = "Utilisateur applicatif de la base de données PostgreSQL"
+  type        = string
+  default     = "meditrack_admin"
+}
+
+variable "db_password" {
+  description = "Mot de passe de la base de données PostgreSQL (à définir dans terraform.tfvars, jamais commité)"
+  type        = string
+  sensitive   = true
+}
+
+variable "api_image_tag" {
+  description = "Tag de l'image Docker de l'API à déployer"
+  type        = string
+  default     = "latest"
+}
