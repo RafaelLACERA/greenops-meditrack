@@ -101,3 +101,15 @@ output "ecs_service_name" {
   description = "Nom du service ECS"
   value       = aws_ecs_service.api.name
 }
+
+# --- Bloc 3 : Observabilité ---
+
+output "sns_topic_arn" {
+  description = "ARN du Topic SNS des alertes critiques"
+  value       = aws_sns_topic.alerts.arn
+}
+
+output "cloudwatch_dashboard_url" {
+  description = "URL directe du tableau de bord CloudWatch"
+  value       = "https://${var.aws_region}.console.aws.amazon.com/cloudwatch/home?region=${var.aws_region}#dashboards:name=${aws_cloudwatch_dashboard.main.dashboard_name}"
+}
