@@ -94,7 +94,7 @@ resource "aws_security_group" "ecs" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description     = "Port API (3000) depuis l'ALB uniquement"
+    description     = "Port API 3000 depuis ALB uniquement"
     from_port       = 3000
     to_port         = 3000
     protocol        = "tcp"
