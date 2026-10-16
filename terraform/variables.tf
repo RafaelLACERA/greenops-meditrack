@@ -107,3 +107,12 @@ variable "api_image_tag" {
   type        = string
   default     = "latest"
 }
+
+# =============================================================================
+# Bloc 3 — Observabilité (CloudWatch Dashboard, SNS, Alarmes)
+# =============================================================================
+
+variable "alert_email" {
+  description = "Adresse e-mail abonnée au Topic SNS pour les alertes critiques"
+  type        = string
+}
