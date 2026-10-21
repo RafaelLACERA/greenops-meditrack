@@ -18,7 +18,7 @@ locals {
     ClusterName = aws_ecs_cluster.main.name
     ServiceName = aws_ecs_service.api.name
   }
-  rds_dimension = { DBInstanceIdentifier = aws_db_instance.main.id }
+  rds_dimension = { DBInstanceIdentifier = aws_db_instance.main.identifier }
 }
 
 resource "aws_cloudwatch_dashboard" "main" {
